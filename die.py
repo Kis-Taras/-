@@ -32,7 +32,7 @@ def asymmetric_simulation(N: int, trials: int) -> dict[int, int]:
     return results
 
 def main():
-    N = 15
+    N = 18
     trials = 10000
 
     # Симуляція з симетричними кубиками
