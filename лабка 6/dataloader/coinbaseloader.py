@@ -1,10 +1,11 @@
 import json
 import pandas as pd
 from datetime import datetime
-from pandas.core.api import DataFrame as DataFrame
+from pandas.core.api import DataFrame
 from enum import Enum
+import requests
 
-from baseloader import BaseDataLoader
+from .baseloader import BaseDataLoader
 
 class Granularity(Enum):
     ONE_MINUTE = 60
@@ -39,7 +40,7 @@ class CoinbaseLoader(BaseDataLoader):
         # retrieve needed data from Coinbase
         data = self._get_req("/products/" + pair + "/candles", params)
         # parse response and create DataFrame from it
-        df = pd.DataFrame(data, columns=("timestamp", "low", "high", "open", "close", "volume"))
+        df = pd.DataFrame(json.loads(data), columns=("timestamp", "low", "high", "open", "close", "volume"))
         # Convert timestamp to datetime
         df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s')
         # use timestamp column as index
