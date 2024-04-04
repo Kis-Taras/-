@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from datetime import datetime, timedelta
 
 import os
 import yaml
@@ -21,9 +20,9 @@ def setup_logging(path='logger.yml', level=logging.INFO, env_key='LOG_CONFIG'):
 
 def get_half_year_data(loader, symbol, year, first_half):
     # Встановлюємо початкову дату
-    start_date = datetime(year, 1 if first_half else 7, 1)
+    start_date = f"{year}-01-01" if first_half else f"{year}-07-01"
     # Встановлюємо кінцеву дату
-    end_date = datetime(year, 6 if first_half else 12, 30 if first_half else 31)
+    end_date = f"{year}-06-30" if first_half else f"{year}-12-31"
     
     # Отримуємо історичні дані за піврік
     data = loader.get_historical_data(symbol, start_date, end_date, Granularity.ONE_DAY)
@@ -77,7 +76,10 @@ def main():
     ax3.plot(df_3.SMA50, label='SMA 50 днів')
     ax3.grid()
 
-    plt.legend()
+    ax1.legend()
+    ax2.legend()
+    ax3.legend()
+
     plt.show()
 
     # Побудова теплової карти для кореляції
