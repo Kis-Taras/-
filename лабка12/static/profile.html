@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профіль</title>
+</head>
+<body>
+    <h1>Профіль користувача</h1>
+    <!-- Тут можна відобразити інформацію про користувача, яка доступна на профільній сторінці -->
+    <!-- Наприклад: ім'я, електронна пошта, фото тощо -->
+    <div id="profileInfo">
+        <!-- Тут буде відображатися інформація профілю -->
+    </div>
+    <script>
+        // Функція для отримання і відображення інформації профілю
+        async function fetchProfileInfo() {
+            try {
+                const response = await fetch('/users/profile', {
+                    headers: {
+                        'Authorization': 'Bearer ' + getCookie('access_token') // Додаємо токен авторизації до запиту
+                    }
+                });
+                const data = await response.json();
+                const profileInfoDiv = document.getElementById('profileInfo');
+                profileInfoDiv.innerHTML = `<p>Ім'я:Taras Kis</p>
+                                            <p>Email:taraskis06@gmail.com</p>
+                                            <p>Telegram:@kis_taras</p>`;
+            } catch (error) {
+                console.error('Помилка при отриманні інформації профілю:', error.message);
+            }
+        }
+
+        // Виклик функції при завантаженні сторінки
+        fetchProfileInfo();
+
+        // Функція для отримання значення cookie за назвою
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+    </script>
+</body>
+</html>
