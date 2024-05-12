@@ -7,12 +7,7 @@ class Post(BaseModel):
 class User(BaseModel):
     name: str
     email: str
-    password: str
 
 class Photo(BaseModel):
     url: str
     description: str
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
