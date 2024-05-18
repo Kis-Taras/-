@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профіль</title>
+</head>
+<body>
+    <h1>Ваш Профіль</h1>
+    <div id="profile"></div>
+    <button onclick="logout()">Вийти</button>
+    <script>
+        async function fetchProfile() {
+            const response = await fetch('/auth/profile', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${getCookie('access_token')}`
+                },
+                credentials: 'include'
+            });
+            const data = await response.json();
+            return data;
+        }
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        async function displayProfile() {
+            const profileDiv = document.getElementById('profile');
+            const profile = await fetchProfile();
+
+            profileDiv.innerHTML = `<p>${profile.message}</p>`;
+        }
+
+        async function logout() {
+            await fetch('/auth/logout', {
+                method: 'GET',
+                credentials: 'include'
+            });
+            alert("Ви успішно вийшли");
+            window.location.href = '/';
+        }
+
+        displayProfile();
+    </script>
+</body>
+</html>
